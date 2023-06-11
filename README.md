@@ -1,5 +1,5 @@
 # checksum
-Compute various digest SHA-256, MD5, for files
+Compute various digests SHA-256, MD5, etc, for given input files.
 
 # Usage
 
@@ -37,7 +37,7 @@ The default checksum is SHA256
 ## Prerequisites
     - conan
     - cmake
-    - poco and dependencies (will be installed by conan if needed)
+    - poco and dependencies (will be installed by conan)
 
 ## Build commands
 After `git clone` run the following commands. You may need to set up a conan profile first, if you never used the conan C++ package manager. Check the tutorial on https://docs.conan.io/ if for more info, or follow the instructions output by the `conan` command.
