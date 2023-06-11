@@ -532,6 +532,8 @@ void digestFile(DigestSet digestSet, string const &fileName, istream &inputFile)
     }
 }
 
+int appExitCode = EXIT_SUCCESS;
+
 void digestFiles(DigestSet digestSet, string const &fileName)
 {
     if (fileName.empty() || fileName == "-"s)
@@ -559,13 +561,22 @@ void digestFiles(DigestSet digestSet, string const &fileName)
         {
             matchingFiles.insert(fileName);
             clog << "No such file: " << fileName << '\n';
-            // return;
+            appExitCode = EXIT_FAILURE;
+            return;
         }
 #else
         matchingFiles.insert(fileName);
 #endif
 
         for (auto const &fileName : matchingFiles)
+        {
+            if (File(fileName).isDirectory())
+            {
+                clog << "Skipping directory: " << fileName << '\n';
+                appExitCode = EXIT_FAILURE;
+                continue;
+            }
+
             try
             {
                 FileInputStream inputFile(fileName, inputFile.binary | inputFile.in);
@@ -575,8 +586,10 @@ void digestFiles(DigestSet digestSet, string const &fileName)
             catch (exception const &exc)
             {
                 clog << "Unable to hash conent of file " << fileName << ": " << exc.what() << '\n';
+                appExitCode = EXIT_FAILURE;
                 continue;
             }
+        }
     }
 }
 
@@ -637,7 +650,7 @@ try
 
     outputDigestStrings();
 
-    return EXIT_SUCCESS;
+    return appExitCode;
 }
 catch (exception const &exp)
 {

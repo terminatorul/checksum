@@ -1,9 +1,7 @@
 [requires]
 poco/1.12.4
-glib/2.76.3
 
 [options]
-*:shared=True
 
 [generators]
 CMakeDeps
